@@ -26,7 +26,6 @@ function listenToMouse(canvas){
         }else{
             // drawCircle(x,y,1);
             lastPoint = {x:x,y:y};
-            console.log(lastPoint)
         }
     }
 
