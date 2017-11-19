@@ -1,28 +1,51 @@
 var canvas = document.getElementById('canvas');
+var ctx = canvas.getContext('2d');
 var using = false;
 var eraserEnable = false;
 autoSetCanvasSize(canvas)
 listenToUser(canvas)
 eraser.onclick = function(){
-    eraserEnable = false;
-    actions.className ='actions x';
-   
-}
-brush.onclick = function(){
     eraserEnable = true;
-    actions.className ='actions';
-   
+    eraser.classList.add('active');
+    pen.classList.remove('active');
 }
+pen.onclick = function(){
+    eraserEnable = false;
+    pen.classList.add('active');
+    eraser.classList.remove('active');
+}
+
+red.onclick = function(){
+    ctx.fillStyle = 'red';
+    ctx.strokeStyle = 'red';
+    red.classList.add('active');
+    green.classList.remove('active');
+    blue.classList.remove('active');
+}
+
+green.onclick = function(){
+    ctx.fillStyle = 'green';
+    ctx.strokeStyle = 'green';
+    red.classList.remove('active');
+    green.classList.add('active');
+    blue.classList.remove('active');
+}
+blue.onclick = function(){
+    ctx.fillStyle = 'blue';
+    ctx.strokeStyle = 'blue';
+    red.classList.remove('active');
+    green.classList.remove('active');
+    blue.classList.add('active');
+}
+
+
 function listenToUser(canvas){
-    var ctx = canvas.getContext('2d');
     var lastPoint = {x:undefined,y:undefined};
     // 特性检测
-    if(document.body.ontouchstart!==null||document.body.ontouchstart!==undefined){
-        console.log('11111111111')
+    if(document.body.ontouchstart!==undefined){
         //说明是触屏
         canvas.ontouchstart = function(ev){
             console.log('开始摸我了')
-            console.log(ev)
             //因为手机支持多点触碰   所以手指点击的时候是一个数组  ev.touches[0]
             var x = ev.touches[0].clientX;
             var y = ev.touches[0].clientY;
@@ -39,7 +62,6 @@ function listenToUser(canvas){
             if(!using) return;
             var x = ev.touches[0].clientX;
             var y = ev.touches[0].clientY;
-            console.log(x)
             if(eraserEnable){
                     ctx.clearRect(x-10,y-10,20,20)
             }else{
@@ -96,7 +118,6 @@ function listenToUser(canvas){
 
     function drawLine(x1,y1,x2,y2){
         ctx.beginPath();
-        ctx.strokeStyle = 'black';
         ctx.lineWidth =5;
         ctx.moveTo(x1,y1);
         ctx.lineTo(x2,y2);
