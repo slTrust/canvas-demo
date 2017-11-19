@@ -1,5 +1,17 @@
+//防止页面抖动 这样会禁掉其他功能
+// document.body.ontouchstart = function(ev){
+//     ev.preventDefault();
+// }
+// 这样也不好使  也会禁用本身的功能
+// document.body.addEventListener('touchstart',function(ev){
+//     ev.preventDefault();
+// })
+
+// 去设置canvas的样式改为定位
+
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
+var lineWidth = 5;
 var using = false;
 var eraserEnable = false;
 autoSetCanvasSize(canvas)
@@ -36,6 +48,28 @@ blue.onclick = function(){
     red.classList.remove('active');
     green.classList.remove('active');
     blue.classList.add('active');
+}
+
+thin.onclick = function(){
+    lineWidth  = 5 ;
+}
+thick.onclick = function(){
+    lineWidth = 10;
+}
+clear.onclick = function(){
+    ctx.clearRect(0,0,canvas.width,canvas.height)
+}
+
+download.onclick = function(){
+   // var image = document.getElementById("canvas").toDataURL("image/png").replace("image/png", "image/octet-stream");
+   // download.setAttribute("href", image);
+   var url  = canvas.toDataURL("image/png")
+   var oLink = document.createElement('a');
+   document.body.appendChild(oLink);
+   oLink.href = url;
+   oLink.download = '我的画儿';
+   oLink.target = '_blank'
+   oLink.click();
 }
 
 
@@ -118,7 +152,7 @@ function listenToUser(canvas){
 
     function drawLine(x1,y1,x2,y2){
         ctx.beginPath();
-        ctx.lineWidth =5;
+        ctx.lineWidth = lineWidth;
         ctx.moveTo(x1,y1);
         ctx.lineTo(x2,y2);
         ctx.stroke();
